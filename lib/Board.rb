@@ -14,12 +14,22 @@ class Board
   def place ship
     row, col = convertor(ship.position)
 
-    if ship.size == 2
-      grid[row][col] = "ship"
-      grid[row][col + 1] = "ship"
-    else
-      grid[row][col] = "ship"
+    for x in 0..ship.size
+      grid[row][col + x] = "ship"
     end
+
+    # if ship.size == 5
+    #   grid[row][col] = "ship"
+    #   grid[row][col + 1] = "ship"
+    #   grid[row][col + 2] = "ship"
+    #   grid[row][col + 3] = "ship"
+    #   grid[row][col + 4] = "ship"
+    # elsif ship.size == 2
+    #   grid[row][col] = "ship"
+    #   grid[row][col + 1] = "ship"
+    # else
+    #   grid[row][col] = "ship"
+    # end
   end
 
   def check_grid square
