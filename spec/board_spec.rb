@@ -11,4 +11,6 @@ describe Board do
   it "converts a square coords into array elements" do
     expect(subject.convertor("A3")).to eq [0,2]
   end
+
+
 end
