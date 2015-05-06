@@ -45,4 +45,28 @@ feature 'A player can fire' do
     expect(ship.hits).to eq 1
   end
 
+  scenario 'when a ship is hit more than its lengh it sinks' do
+    board = Board.new
+    ship = Destroyer.new "A3"
+    board.place ship
+    board.fire("A3")
+    board.fire("A4")
+    expect(ship).to_not be_floating
+  end
+
+  scenario 'when all the ships have been sunk the game is over' do
+    board = Board.new
+    ship = Destroyer.new "A3"
+    board.place ship
+    board.fire("A3")
+    board.fire("A4")
+    expect(ship).to_not be_floating
+    expect(board.game_over).to be_truthy
+  end
+
 end
+
+
+
+
+

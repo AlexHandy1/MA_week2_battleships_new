@@ -8,13 +8,13 @@ require_relative 'carrier'
 
 class Board
 
-  attr_accessor :grid, :guesses, :fleet, :ship_positions
+  attr_accessor :grid, :guesses, :fleet, :ship_positions, :game_over
 
   def initialize(size = 10)
     @grid = Array.new(size){Array.new(size)}
     @fleet = []
     @guesses = []
-    @ship_positions = []
+    @game_over = false
   end
 
   def place ship
@@ -73,6 +73,8 @@ class Board
         ship.all_blocks.each do |x|
           if x == square
             ship.is_hit
+            ship.is_sunk
+            game_over
           end
         end
       end
@@ -100,6 +102,11 @@ class Board
 
   def already_a_ship?(row, col)
     grid[row][col] == "ship"
+  end
+
+  def game_over
+    game_over = true if fleet.each{|ship| ship.sunk?}
+    return game_over
   end
 
 end
