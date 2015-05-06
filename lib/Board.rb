@@ -18,6 +18,7 @@ class Board
 
   def place ship
     row, col = convertor(ship.position)
+    fail 'Out of bounds' if row > 9 || col.to_i > 9
 
     if ship.direction == "V"
       for x in 0..ship.size-1
@@ -37,8 +38,17 @@ class Board
 
   def convertor square
     alphabet = ("a".."z").to_a
-    row = square.downcase.chars.first
-    col = square.downcase.chars.last
+    row, col = square.downcase.split(//,2)
     coords = alphabet.index(row), (col.to_i) - 1
   end
+
+  def show_grid
+    grid.each { |x| p x }
+  end
+
+  # def out_of_bounds?(square)
+  # #   row, col = convertor(square)
+  #   return true if row > 10 || col > 10
+  # end
+
 end

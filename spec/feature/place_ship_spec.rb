@@ -33,3 +33,14 @@ feature "place a ship" do
     expect(board.check_grid "A3").to eq "ship"
   end
 end
+
+feature 'Cannot place a ship' do
+  scenario 'outside of the board' do
+  board = Board.new
+  ship = Ship.new("A11")
+  expect { board.place ship }.to raise_error 'Out of bounds'
+  end
+
+
+
+end
