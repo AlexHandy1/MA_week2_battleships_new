@@ -106,6 +106,7 @@ class Board
 
   def game_over
     game_over = true if fleet.each{|ship| ship.sunk?}
+    puts "You win!"
     return game_over
   end
 
