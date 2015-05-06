@@ -1,6 +1,7 @@
 require 'board'
 
 feature "place a ship" do
+
   scenario "on the grid and check its position" do
     board = Board.new
     ship = Ship.new("A3")
@@ -24,4 +25,11 @@ feature "place a ship" do
     expect(board.check_grid "B5").to eq "ship"
   end
 
+  scenario "that is a destroyer and has a direction of vertical" do
+    board = Board.new
+    ship = Destroyer.new("A3", "V")
+    board.place ship
+    expect(board.check_grid "B3").to eq "ship"
+    expect(board.check_grid "A3").to eq "ship"
+  end
 end

@@ -1,4 +1,9 @@
 require_relative 'ship'
+require_relative 'destroyer'
+require_relative 'cruiser'
+require_relative 'battleship'
+require_relative 'submarine'
+require_relative 'carrier'
 
 class Board
 
@@ -14,22 +19,15 @@ class Board
   def place ship
     row, col = convertor(ship.position)
 
-    for x in 0..ship.size
-      grid[row][col + x] = "ship"
+    if ship.direction == "V"
+      for x in 0..ship.size-1
+        grid[row+x][col] = "ship"
+      end
+    else
+      for x in 0..ship.size-1
+        grid[row][col+x] = "ship"
+      end
     end
-
-    # if ship.size == 5
-    #   grid[row][col] = "ship"
-    #   grid[row][col + 1] = "ship"
-    #   grid[row][col + 2] = "ship"
-    #   grid[row][col + 3] = "ship"
-    #   grid[row][col + 4] = "ship"
-    # elsif ship.size == 2
-    #   grid[row][col] = "ship"
-    #   grid[row][col + 1] = "ship"
-    # else
-    #   grid[row][col] = "ship"
-    # end
   end
 
   def check_grid square

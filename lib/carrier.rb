@@ -1,17 +1,12 @@
-class Ship
+require_relative 'ship'
 
+class Carrier < Ship
   attr_accessor :position, :floating, :hits, :size, :direction
-
-  def initialize (position = "A1", direction = "H")
+  def initialize(position = "A1", direction = "H")
     @position = position
     @floating = true
+    @size = 5
     @hits = 0
-    @size = 1
     @direction = direction
   end
-
-  def floating?
-    @floating
-  end
-
 end
