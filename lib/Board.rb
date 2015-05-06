@@ -18,14 +18,31 @@ class Board
 
   def place ship
     row, col = convertor(ship.position)
-    fail 'Out of bounds' if row > 9 || col.to_i > 9
+    fail 'Out of bounds' if row > 9 || col > 9
+    fail "Already a ship" if grid[row][col] == "ship"
 
     if ship.direction == "V"
       for x in 0..ship.size-1
+        if row+x > 9 || col > 9
+          grid[row+x-1][col] = nil
+          fail 'Out of bounds'
+        end
+        if grid[row+x][col] == "ship"
+          grid[row+x-1][col] = nil
+          fail 'Already a ship'
+        end
         grid[row+x][col] = "ship"
       end
     else
       for x in 0..ship.size-1
+        if row > 9 || col+x > 9
+          grid[row][col+x-1] = nil
+          fail 'Out of bounds'
+        end
+        if grid[row][col+x] == "ship"
+          grid[row][col+x-1] = nil
+          fail 'Already a ship'
+        end
         grid[row][col+x] = "ship"
       end
     end

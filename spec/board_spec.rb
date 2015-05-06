@@ -13,4 +13,8 @@ describe Board do
     expect(subject.convertor("A3")).to eq [0,2]
   end
 
+  it "converts square coords that are double figures into array elements" do
+    expect(subject.convertor("B10")).to eq [1,9]
+  end
+
 end

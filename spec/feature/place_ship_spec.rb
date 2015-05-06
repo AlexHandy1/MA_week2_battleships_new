@@ -35,12 +35,42 @@ feature "place a ship" do
 end
 
 feature 'Cannot place a ship' do
-  scenario 'outside of the board' do
-  board = Board.new
-  ship = Ship.new("A11")
-  expect { board.place ship }.to raise_error 'Out of bounds'
+  scenario 'where starts outside of the board' do
+    board = Board.new
+    ship = Ship.new("A11")
+    expect { board.place ship }.to raise_error 'Out of bounds'
   end
 
+  scenario 'that is horizontally outside the board' do
+    board = Board.new
+    ship = Cruiser.new("A9")
+    expect {board.place ship}.to raise_error 'Out of bounds'
+  end
 
+  scenario 'that is vertically outside the board' do
+    board = Board.new
+    ship = Cruiser.new("I9")
+    expect {board.place ship}.to raise_error 'Out of bounds'
+  end
 
+  scenario 'where there is already a ship' do
+    board = Board.new
+    ship = Submarine.new("A2")
+    ship2 = Cruiser.new("A2")
+    board.place ship
+    expect {board.place ship2}.to raise_error "Already a ship"
+  end
+
+  scenario 'where they overlap' do
+    board = Board.new
+    ship = Submarine.new("A2")
+    ship2 = Carrier.new("A1")
+    board.place ship
+    expect {board.place ship2}.to raise_error "Already a ship"
+  end
 end
+
+
+
+
+
