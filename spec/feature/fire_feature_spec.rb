@@ -36,4 +36,13 @@ feature 'A player can fire' do
     board.fire("A4")
     expect(ship.hits).to eq 1
   end
+
+  scenario 'when vertical ship is hit, it registers a hit other than on starting point' do
+    board = Board.new
+    ship = Destroyer.new "A3", "V"
+    board.place ship
+    board.fire("B3")
+    expect(ship.hits).to eq 1
+  end
+
 end

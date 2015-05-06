@@ -4,7 +4,7 @@ require_relative 'cruiser'
 require_relative 'battleship'
 require_relative 'submarine'
 require_relative 'carrier'
-require 'byebug'
+
 
 class Board
 
@@ -34,6 +34,12 @@ class Board
         end
         grid[row+x][col] = "ship"
       end
+      ship.all_blocks = [ship.position]
+      x, y = (ship.position).split(//,2)
+      x = x.chars
+      (ship.size - 1).times { x << x.last.next }
+      x.map!{ |letter| letter + y }
+      ship.all_blocks = x
       @fleet << ship
     else
       for x in 0..ship.size-1
@@ -49,7 +55,7 @@ class Board
       end
         ship.all_blocks = [ship.position]
         (ship.size - 1).times {ship.all_blocks << ship.all_blocks.last.next}
-      @fleet << ship
+        @fleet << ship
     end
   end
 
