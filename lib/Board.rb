@@ -18,8 +18,8 @@ class Board
 
   def place ship
     row, col = convertor(ship.position)
-    fail 'Out of bounds' if row > 9 || col > 9
-    fail "Already a ship" if grid[row][col] == "ship"
+    fail 'Out of bounds' if out_of_bounds?(row, col)
+    fail "Already a ship" if already_a_ship?(row, col)
 
     if ship.direction == "V"
       for x in 0..ship.size-1
@@ -27,7 +27,7 @@ class Board
           grid[row+x-1][col] = nil
           fail 'Out of bounds'
         end
-        if grid[row+x][col] == "ship"
+        if already_a_ship?(row+x,col)
           grid[row+x-1][col] = nil
           fail 'Already a ship'
         end
@@ -39,7 +39,7 @@ class Board
           grid[row][col+x-1] = nil
           fail 'Out of bounds'
         end
-        if grid[row][col+x] == "ship"
+        if already_a_ship?(row, col+x)
           grid[row][col+x-1] = nil
           fail 'Already a ship'
         end
@@ -53,6 +53,17 @@ class Board
      grid[row][col]
   end
 
+  def fire square
+    row, col = convertor(square)
+    if grid[row][col] == "ship"
+      grid[row][col] = "HIT"
+    elsif grid[row][col] == nil
+      grid[row][col] = "X"
+    else
+      fail "Already guessed"
+    end
+  end
+
   def convertor square
     alphabet = ("a".."z").to_a
     row, col = square.downcase.split(//,2)
@@ -63,9 +74,12 @@ class Board
     grid.each { |x| p x }
   end
 
-  # def out_of_bounds?(square)
-  # #   row, col = convertor(square)
-  #   return true if row > 10 || col > 10
-  # end
+  def out_of_bounds?(row, col)
+    row > 9 || col > 9
+  end
+
+  def already_a_ship?(row, col)
+    grid[row][col] == "ship"
+  end
 
 end

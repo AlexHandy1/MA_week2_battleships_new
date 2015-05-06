@@ -68,9 +68,8 @@ feature 'Cannot place a ship' do
     board.place ship
     expect {board.place ship2}.to raise_error "Already a ship"
   end
+
 end
-
-
 
 
 

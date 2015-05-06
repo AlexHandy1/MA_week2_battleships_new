@@ -4,6 +4,7 @@ describe Board do
   it{is_expected.to respond_to(:place)}
   it{is_expected.to respond_to(:check_grid)}
   it { is_expected.to respond_to(:show_grid)}
+  it { is_expected.to respond_to(:fire).with(1).argument }
 
   it "check that the grid exists" do
     expect(subject.grid.length).to eq 10
