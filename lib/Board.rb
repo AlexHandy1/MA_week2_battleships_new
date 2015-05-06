@@ -20,7 +20,7 @@ class Board
   def place ship
     row, col = convertor(ship.position)
     fail 'Out of bounds' if out_of_bounds?(row, col)
-    fail "Already a ship" if already_a_ship?(row, col)
+    fail "Already a ship" if grid[row][col].nil? == false
 
     if ship.direction == "V"
       for x in 0..ship.size-1
@@ -28,33 +28,25 @@ class Board
           grid[row+x-1][col] = nil
           fail 'Out of bounds'
         end
-        if already_a_ship?(row+x,col)
+        if grid[row+x][col].nil? == false
           grid[row+x-1][col] = nil
           fail 'Already a ship'
         end
-        grid[row+x][col] = "ship"
+        grid[row+x][col] = ship
       end
-      ship.all_blocks = [ship.position]
-      x, y = (ship.position).split(//,2)
-      x = x.chars
-      (ship.size - 1).times { x << x.last.next }
-      x.map!{ |letter| letter + y }
-      ship.all_blocks = x
-      @fleet << ship
+        @fleet << ship
     else
       for x in 0..ship.size-1
         if row > 9 || col+x > 9
           grid[row][col+x-1] = nil
           fail 'Out of bounds'
         end
-        if already_a_ship?(row, col+x)
+        if grid[row][col+x].nil? == false
           grid[row][col+x-1] = nil
           fail 'Already a ship'
         end
-        grid[row][col+x] = "ship"
+        grid[row][col+x] = ship
       end
-        ship.all_blocks = [ship.position]
-        (ship.size - 1).times {ship.all_blocks << ship.all_blocks.last.next}
         @fleet << ship
     end
   end
@@ -66,19 +58,14 @@ class Board
 
   def fire square
     row, col = convertor(square)
-    if grid[row][col] == "ship"
-      grid[row][col] = "HIT"
-
+    if grid[row][col].nil? == false && grid[row][col] != "X"
       fleet.each do |ship|
-        ship.all_blocks.each do |x|
-          if x == square
-            ship.is_hit
-            ship.is_sunk
-            game_over
-          end
+        if ship == grid[row][col]
+          grid[row][col].is_hit
+          ship.is_sunk
+          game_over
         end
       end
-
     elsif grid[row][col] == nil
       grid[row][col] = "X"
     else
@@ -100,14 +87,17 @@ class Board
     row > 9 || col > 9
   end
 
-  def already_a_ship?(row, col)
-    grid[row][col] == "ship"
-  end
-
-  def game_over
-    game_over = true if fleet.each{|ship| ship.sunk?}
-    puts "You win!"
+  def game_over #refactored >> reduced extra puts each hit and added .all? parameter
+    if fleet.all?{|ship| ship.sunk?}
+      game_over = true
+      puts "You win!"
+    end
     return game_over
   end
 
+  #added clear_board to start new game
+  def clear_board
+     grid.map!{|a,b,c,d,e,f,g,h,i,j| a,b,c,d,e,f,g,h,i,j = nil, nil, nil, nil,nil, nil, nil, nil, nil, nil }
+     #would also need to empty fleet
+  end
 end
