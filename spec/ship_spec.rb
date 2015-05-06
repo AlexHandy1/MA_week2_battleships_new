@@ -14,6 +14,12 @@ describe Ship do
     expect(ship.size).to eq 1
   end
 
+  it 'can take a hit' do
+    ship = Ship.new "A3"
+    ship.is_hit
+    expect(ship.hits).to eq 1
+  end
+
   #ADD FURTHER TESTS FOR SPACES
   context "Destroyer" do
     it "has 2 spaces" do
@@ -24,6 +30,12 @@ describe Ship do
     it "it has a direction of vertical" do
       ship = Destroyer.new "A2", "V"
       expect(ship.direction).to eq "V"
+    end
+
+    it "can take a hit" do
+      ship = Destroyer.new "A3"
+      ship.is_hit
+      expect(ship.hits).to eq 1
     end
   end
 

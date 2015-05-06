@@ -4,14 +4,15 @@ require_relative 'cruiser'
 require_relative 'battleship'
 require_relative 'submarine'
 require_relative 'carrier'
+require 'byebug'
 
 class Board
 
-  attr_accessor :grid, :guesses, :ships, :ship_positions
+  attr_accessor :grid, :guesses, :fleet, :ship_positions
 
   def initialize(size = 10)
     @grid = Array.new(size){Array.new(size)}
-    @ships = []
+    @fleet = []
     @guesses = []
     @ship_positions = []
   end
@@ -33,6 +34,7 @@ class Board
         end
         grid[row+x][col] = "ship"
       end
+      @fleet << ship
     else
       for x in 0..ship.size-1
         if row > 9 || col+x > 9
@@ -45,6 +47,9 @@ class Board
         end
         grid[row][col+x] = "ship"
       end
+        ship.all_blocks = [ship.position]
+        (ship.size - 1).times {ship.all_blocks << ship.all_blocks.last.next}
+      @fleet << ship
     end
   end
 
@@ -57,6 +62,15 @@ class Board
     row, col = convertor(square)
     if grid[row][col] == "ship"
       grid[row][col] = "HIT"
+
+      fleet.each do |ship|
+        ship.all_blocks.each do |x|
+          if x == square
+            ship.is_hit
+          end
+        end
+      end
+
     elsif grid[row][col] == nil
       grid[row][col] = "X"
     else
