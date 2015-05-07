@@ -81,10 +81,6 @@ class Board
     coords = alphabet.index(row), (col.to_i) - 1
   end
 
-  def show_grid
-    grid.each { |x| p x }
-  end
-
   def out_of_bounds?(row, col)
     row > 9 || col > 9
   end
