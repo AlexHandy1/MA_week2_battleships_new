@@ -61,7 +61,7 @@ feature 'A player can fire' do
     board.fire("A3")
     board.fire("A4")
     expect(ship).to_not be_floating
-    expect(board.game_over).to be_truthy
+    expect(board.game_over?).to be_truthy
   end
 
 end

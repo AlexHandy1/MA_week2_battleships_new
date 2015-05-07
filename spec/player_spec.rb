@@ -4,7 +4,7 @@ require 'board'
 describe Player do
   it "can create its own board" do
     player = Player.new {Board.new}
-    expect(player.pl_board).to be_instance_of Board
+    expect(player.my_board).to be_instance_of Board
   end
 
   xit "can receive an opponents board" do

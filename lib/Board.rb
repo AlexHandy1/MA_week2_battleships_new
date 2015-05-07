@@ -60,14 +60,16 @@ class Board
     row, col = convertor(square)
 
     if grid[row][col] == nil
+      puts "Unlucky you missed"
       grid[row][col] = "X"
     elsif grid[row][col].nil? == false && grid[row][col] != "X" && grid[row][col] != "HIT"
       fleet.each do |ship|
         if ship == grid[row][col]
+          puts "You hit a ship!"
           grid[row][col].is_hit
           grid[row][col] = "HIT"
           ship.is_sunk
-          game_over
+          game_over?
         end
       end
     else
@@ -85,12 +87,12 @@ class Board
     row > 9 || col > 9
   end
 
-  def game_over #refactored >> reduced extra puts each hit and added .all? parameter
+  def game_over? #refactored >> reduced extra puts each hit and added .all? parameter
     if fleet.all?{|ship| ship.sunk?}
       game_over = true
       puts "You win!"
     end
-    return game_over #add exit program
+    game_over
   end
 
   #added clear_board to start new game
