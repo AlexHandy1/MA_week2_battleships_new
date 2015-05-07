@@ -58,16 +58,18 @@ class Board
 
   def fire square
     row, col = convertor(square)
-    if grid[row][col].nil? == false && grid[row][col] != "X"
+
+    if grid[row][col] == nil
+      grid[row][col] = "X"
+    elsif grid[row][col].nil? == false && grid[row][col] != "X" && grid[row][col] != "HIT"
       fleet.each do |ship|
         if ship == grid[row][col]
           grid[row][col].is_hit
+          grid[row][col] = "HIT"
           ship.is_sunk
           game_over
         end
       end
-    elsif grid[row][col] == nil
-      grid[row][col] = "X"
     else
       fail "Already guessed"
     end
@@ -92,7 +94,7 @@ class Board
       game_over = true
       puts "You win!"
     end
-    return game_over
+    return game_over #add exit program
   end
 
   #added clear_board to start new game
