@@ -7,10 +7,6 @@ describe Player do
     expect(player.my_board).to be_instance_of Board
   end
 
-  xit "can receive an opponents board" do
-
-  end
-
   it "can put a ship on its own board and check position" do
     player = Player.new {Board.new}
     ship = instance_double("ship", :position => "A3", :direction => "H", :size => 2, :hits => 0, :all_blocks => 0, :floating => true)

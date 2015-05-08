@@ -4,10 +4,11 @@ require_relative 'cruiser'
 require_relative 'battleship'
 require_relative 'submarine'
 require_relative 'carrier'
+require_relative 'converter'
 
 
 class Board
-
+  include Converter
   attr_accessor :grid, :guesses, :fleet, :ship_positions, :game_over
 
   def initialize(size = 10)
@@ -17,11 +18,12 @@ class Board
     @game_over = false
   end
 
-  def place ship
-    row, col = convertor(ship.position)
+  def place ship #consider reword to place_ship
+    row, col = converter(ship.position)
     fail 'Out of bounds' if out_of_bounds?(row, col)
     fail "Already a ship" if grid[row][col].nil? == false
 
+    #not DRY or SRP >> how refactor into block/ proc?
     if ship.direction == "V"
       for x in 0..ship.size-1
         if row+x > 9 || col > 9
@@ -51,18 +53,19 @@ class Board
     end
   end
 
-  def check_grid square
-     row, col = convertor(square)
+  def check_grid square #consider reword/ removal >> SHOW_CELL >> NOT its responsibility
+     row, col = converter(square)
      grid[row][col]
   end
 
-  def fire square
-    row, col = convertor(square)
+  def fire square #consider reword >> receive_hit
+    row, col = converter(square)
 
     if grid[row][col] == nil
       puts "Unlucky you missed"
       grid[row][col] = "X"
     elsif grid[row][col].nil? == false && grid[row][col] != "X" && grid[row][col] != "HIT"
+      #How distill this out into a block/ proc?
       fleet.each do |ship|
         if ship == grid[row][col]
           puts "You hit a ship!"
@@ -77,17 +80,11 @@ class Board
     end
   end
 
-  def convertor square
-    alphabet = ("a".."z").to_a
-    row, col = square.downcase.split(//,2)
-    coords = alphabet.index(row), (col.to_i) - 1
-  end
-
   def out_of_bounds?(row, col)
     row > 9 || col > 9
   end
 
-  def game_over? #refactored >> reduced extra puts each hit and added .all? parameter
+  def game_over? #shouldn't be in board class >> move to a game
     if fleet.all?{|ship| ship.sunk?}
       game_over = true
       puts "You win!"
